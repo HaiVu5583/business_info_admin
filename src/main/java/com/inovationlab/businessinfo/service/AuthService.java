@@ -1,6 +1,6 @@
 package com.inovationlab.businessinfo.service;
 
-import com.inovationlab.businessinfo.domain.Partner;
+import com.inovationlab.businessinfo.entity.Partner;
 import com.inovationlab.businessinfo.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

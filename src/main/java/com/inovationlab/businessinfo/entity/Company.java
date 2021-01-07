@@ -1,4 +1,4 @@
-package com.inovationlab.businessinfo.domain;
+package com.inovationlab.businessinfo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
