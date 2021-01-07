@@ -1,5 +1,7 @@
 package com.inovationlab.businessinfo.endpoint;
 
+import org.springframework.http.ResponseEntity;
+
 public class AppResponse {
     private int code;
     private String message;
@@ -28,7 +30,11 @@ public class AppResponse {
         this.message = message;
     }
 
-    static AppResponse getUnauthrizedResponse(){
+    public static AppResponse getUnauthrizedResponse(){
         return new AppResponse(401, "Unauthrized");
+    }
+
+    public static AppResponse getOkResponse(){
+        return new AppResponse(200, "Ok");
     }
 }

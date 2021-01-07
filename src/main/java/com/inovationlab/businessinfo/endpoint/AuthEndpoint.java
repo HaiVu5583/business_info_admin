@@ -25,4 +25,10 @@ public class AuthEndpoint extends AbstractEndpoint {
         }
         return getOkResponseEntity();
     }
+
+    @RequestMapping("/userinfo")
+    public ResponseEntity<?> userInfo() {
+        return getOkResponseEntity();
+    }
+
 }

@@ -8,15 +8,17 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "partner")
-
 public class Partner {
     @Id
     @Column(name = "partner_code")
     private String partnerCode;
+
     @Column(name = "partner_secret")
     private String partnerSecret;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
+
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
