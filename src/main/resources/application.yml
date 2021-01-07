@@ -4,12 +4,12 @@ server:
 ## SPRING
 spring:
   application:
-    name: onboarding
+    name: businessinfo
 
   datasource:
-    url: jdbc:mysql://13.76.172.160:3306/enterprise?useSSL=true&verifyServerCertificate=false&useUnicode=true&character_set_server=utf8mb4
-    username: hisalon@hisalon-dev
-    password: Mbinno!@#456
+    url: jdbc:mysql://127.0.0.1:3306/bussiness_info?useSSL=true&verifyServerCertificate=false&useUnicode=true&character_set_server=utf8mb4
+    username: root
+    password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       max-lifetime: 1800000
