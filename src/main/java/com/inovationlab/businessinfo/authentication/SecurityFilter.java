@@ -27,16 +27,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String partnerCode = request.getHeader(PARTNER_CODE_HEADER_NAME);
         String partnerSecret = request.getHeader(PARTNER_SECRET_HEADER_NAME);
-        if (partnerCode == null || partnerSecret == null){
-            setUnauthorizedErrorResponse(response);
-            return;
+        if (partnerCode != null) {
+            if (partnerSecret == null) {
+                setUnauthorizedErrorResponse(response);
+                return;
+            }
+            AppAuthenticationToken appAuthenticationToken = partnerAuthenticationManager.getAuthenticationByPartnerCodeSecret(partnerCode, partnerSecret);
+            if (appAuthenticationToken == null) {
+                setUnauthorizedErrorResponse(response);
+                return;
+            }
+            SecurityContextHolder.getContext().setAuthentication(appAuthenticationToken);
         }
-        AppAuthenticationToken appAuthenticationToken = partnerAuthenticationManager.getAuthenticationByPartnerCodeSecret(partnerCode, partnerSecret);
-        if (appAuthenticationToken == null){
-            setUnauthorizedErrorResponse(response);
-            return;
-        }
-        SecurityContextHolder.getContext().setAuthentication(appAuthenticationToken);
+
         filterChain.doFilter(request, response);
     }
 
