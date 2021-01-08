@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,17 +19,13 @@ public class AuthEndpoint extends AbstractEndpoint {
     private AuthService authService;
 
     @RequestMapping("/test")
-    public ResponseEntity<?> test(@RequestHeader("PARTNER_CODE") String partnerCode, @RequestHeader("PARTNER_SECRET") String partnerSecret) {
-        boolean isValidPartner = authService.isValidPartner(partnerCode, partnerSecret);
-        if (!isValidPartner){
-            return new ResponseEntity<>(AppResponse.getUnauthrizedResponse() , HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<?> test() {
         return getOkResponseEntity();
     }
 
-    @RequestMapping("/userinfo")
+    @RequestMapping("/partner_info")
     public ResponseEntity<?> userInfo() {
-        return getOkResponseEntity();
+        return getResponseEntity(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
 }

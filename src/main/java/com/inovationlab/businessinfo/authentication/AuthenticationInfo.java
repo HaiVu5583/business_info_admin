@@ -42,7 +42,6 @@ public class AuthenticationInfo {
 
     public static final AuthenticationInfo createByPartner(Partner partner) {
         AuthenticationInfo authenticationInfo = new AuthenticationInfo();
-
         authenticationInfo.setRole(AppUserRole.PARTNER);
         authenticationInfo.setPartnerCode(partner.getPartnerCode());
         authenticationInfo.setPartnerSecret(partner.getPartnerSecret());
