@@ -21,7 +21,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     private static final String PARTNER_CODE_HEADER_NAME = "PARTNER_CODE";
     private static final String PARTNER_SECRET_HEADER_NAME = "PARTNER_SECRET";
     @Autowired
-    private AuthService authService;
+    private PartnerAuthenticationManager partnerAuthenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,14 +31,12 @@ public class SecurityFilter extends OncePerRequestFilter {
             setUnauthorizedErrorResponse(response);
             return;
         }
-        boolean isValidPartner = authService.isValidPartner(partnerCode, partnerSecret);
-        if (!isValidPartner){
+        AppAuthenticationToken appAuthenticationToken = partnerAuthenticationManager.getAuthenticationByPartnerCodeSecret(partnerCode, partnerSecret);
+        if (appAuthenticationToken == null){
             setUnauthorizedErrorResponse(response);
             return;
         }
-
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-//        securityContext.setAuthentication();
+        SecurityContextHolder.getContext().setAuthentication(appAuthenticationToken);
         filterChain.doFilter(request, response);
     }
 
