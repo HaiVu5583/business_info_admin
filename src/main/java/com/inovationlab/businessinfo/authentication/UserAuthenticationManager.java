@@ -32,15 +32,13 @@ public class UserAuthenticationManager {
             DecodedJWT jwt = verifier.verify(jwtToken);
             String username = jwt.getClaim("username").asString();
             String role = jwt.getClaim("role").asString();
-            logger.info("Username: " + username);
-            logger.info("Role: " + role);
             User user = new User();
             user.setUsername(username);
             user.setRole(role);
             AuthenticationInfo authenticationInfo = AuthenticationInfo.createByUser(user);
             AppAuthenticationToken appAuthenticationToken = AppAuthenticationToken.create(authenticationInfo);
             return appAuthenticationToken;
-        } catch (JWTVerificationException exception){
+        } catch (JWTVerificationException exception) {
             return null;
         }
     }

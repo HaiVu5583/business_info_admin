@@ -12,11 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice(basePackageClasses = { AppExceptionHandler.class })
+@ControllerAdvice(basePackageClasses = {AppExceptionHandler.class})
 public class AppExceptionHandler {
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -32,9 +33,24 @@ public class AppExceptionHandler {
         return new ResponseEntity<AppResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = InvalidParamException.class)
-    public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, InvalidParamException e) {
+    private ResponseEntity<AppResponse> getInvalidParamResponse(){
         AppResponse errorResponse = new AppResponse(HttpStatus.BAD_REQUEST.value(), "invalid_param");
         return new ResponseEntity<AppResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = InvalidParamException.class)
+    public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, InvalidParamException e) {
+        return getInvalidParamResponse();
+    }
+
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, MethodArgumentTypeMismatchException e) {
+        return getInvalidParamResponse();
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, IllegalArgumentException e) {
+        return getInvalidParamResponse();
+    }
+
 }

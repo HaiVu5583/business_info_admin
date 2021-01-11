@@ -56,12 +56,12 @@ public class AuthService {
 
     public LoginResponseDto login(LoginRequestDto requestDto) {
         if (requestDto.getUsername() == null || requestDto.getUsername().isEmpty()
-        || requestDto.getPassword() == null || requestDto.getPassword().isEmpty()
+                || requestDto.getPassword() == null || requestDto.getPassword().isEmpty()
         ) {
             throw new InvalidParamException();
         }
         User user = userRepository.findUser(requestDto.getUsername());
-        if (user == null) {
+        if (user == null || user.getActive() == null || user.getActive() != 1) {
             throw new UserNotFoundException();
         }
         boolean isMatched = passwordEncoder.matches(requestDto.getPassword(), user.getPassword());
