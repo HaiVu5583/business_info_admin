@@ -30,8 +30,8 @@ public class AppResponse {
         this.message = message;
     }
 
-    public static AppResponse getUnauthrizedResponse() {
-        return new AppResponse(401, "Unauthrized");
+    public static AppResponse getUnauthorizedResponse() {
+        return new AppResponse(401, "Unauthorized");
     }
 
     public static AppResponse getOkResponse() {

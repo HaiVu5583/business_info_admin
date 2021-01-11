@@ -27,13 +27,13 @@ public class AppExceptionHandler {
     }
 
     @ExceptionHandler(value = UserNotFoundException.class)
-    public ResponseEntity<AppResponse> defaultExceptionHandler(HttpServletRequest req, UserNotFoundException e) {
+    public ResponseEntity<AppResponse> userNotFoundExceptionHandler(HttpServletRequest req, UserNotFoundException e) {
         AppResponse errorResponse = new AppResponse(HttpStatus.UNAUTHORIZED.value(), "invalid_user");
         return new ResponseEntity<AppResponse>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = InvalidParamException.class)
-    public ResponseEntity<AppResponse> defaultExceptionHandler(HttpServletRequest req, InvalidParamException e) {
+    public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, InvalidParamException e) {
         AppResponse errorResponse = new AppResponse(HttpStatus.BAD_REQUEST.value(), "invalid_param");
         return new ResponseEntity<AppResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }

@@ -36,8 +36,13 @@ public class AuthEndpoint extends AbstractEndpoint {
     }
 
     @GetMapping("/partner_info")
-    public ResponseEntity<?> userInfo() {
+    public ResponseEntity<?> getPartnerInfo() {
         return getResponseEntity(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    }
+
+    @GetMapping("/user_info")
+    public ResponseEntity<?> getUserInfo(){
+        return getOkResponseEntity();
     }
 
 }

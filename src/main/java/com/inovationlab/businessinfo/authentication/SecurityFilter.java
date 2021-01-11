@@ -20,13 +20,18 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
     private static final String PARTNER_CODE_HEADER_NAME = "PARTNER_CODE";
     private static final String PARTNER_SECRET_HEADER_NAME = "PARTNER_SECRET";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     @Autowired
     private PartnerAuthenticationManager partnerAuthenticationManager;
+
+    @Autowired
+    private UserAuthenticationManager userAuthenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String partnerCode = request.getHeader(PARTNER_CODE_HEADER_NAME);
         String partnerSecret = request.getHeader(PARTNER_SECRET_HEADER_NAME);
+        String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
         if (partnerCode != null) {
             if (partnerSecret == null) {
                 setUnauthorizedErrorResponse(response);
@@ -38,8 +43,19 @@ public class SecurityFilter extends OncePerRequestFilter {
                 return;
             }
             SecurityContextHolder.getContext().setAuthentication(appAuthenticationToken);
+        } else if (authorizationHeader != null) {
+            if (!authorizationHeader.startsWith("Bearer ")){
+                setUnauthorizedErrorResponse(response);
+                return;
+            }
+            String jwtToken = authorizationHeader.substring(7);
+            AppAuthenticationToken appAuthenticationToken = userAuthenticationManager.getAuthenticationByJwtToken(jwtToken);
+            if (appAuthenticationToken == null){
+                setUnauthorizedErrorResponse(response);
+                return;
+            }
+            SecurityContextHolder.getContext().setAuthentication(appAuthenticationToken);
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -53,6 +69,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private void setUnauthorizedErrorResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getWriter().write(convertObjectToJson(AppResponse.getUnauthrizedResponse()));
+        response.getWriter().write(convertObjectToJson(AppResponse.getUnauthorizedResponse()));
     }
 }

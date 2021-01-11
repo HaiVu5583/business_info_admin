@@ -45,7 +45,7 @@ public class AuthService {
     public String generateJWTToken(User user) {
         Calendar expireTime = Calendar.getInstance();
         expireTime.add(Calendar.MINUTE, jwtExpiry);
-        Algorithm algorithm = Algorithm.HMAC256("secret");
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
         JWTCreator.Builder builder = JWT.create()
                 .withExpiresAt(expireTime.getTime());
         builder.withClaim("username", user.getUsername());
