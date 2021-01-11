@@ -7,6 +7,7 @@ import com.inovationlab.businessinfo.dto.LoginRequestDto;
 import com.inovationlab.businessinfo.dto.LoginResponseDto;
 import com.inovationlab.businessinfo.entity.Partner;
 import com.inovationlab.businessinfo.entity.User;
+import com.inovationlab.businessinfo.exception.InvalidParamException;
 import com.inovationlab.businessinfo.exception.UserNotFoundException;
 import com.inovationlab.businessinfo.repository.PartnerRepository;
 import com.inovationlab.businessinfo.repository.UserRepository;
@@ -54,12 +55,19 @@ public class AuthService {
     }
 
     public LoginResponseDto login(LoginRequestDto requestDto) {
+        if (requestDto.getUsername() == null || requestDto.getUsername().isEmpty()
+        || requestDto.getPassword() == null || requestDto.getPassword().isEmpty()
+        ) {
+            throw new InvalidParamException();
+        }
         User user = userRepository.findUser(requestDto.getUsername());
         if (user == null) {
             throw new UserNotFoundException();
         }
         boolean isMatched = passwordEncoder.matches(requestDto.getPassword(), user.getPassword());
-        if (!isMatched) throw new UserNotFoundException();
+        if (!isMatched) {
+            throw new UserNotFoundException();
+        }
         return new LoginResponseDto(user.getUsername(), generateJWTToken(user));
     }
 
