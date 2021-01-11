@@ -2,22 +2,22 @@ package com.inovationlab.businessinfo.dto;
 
 public class LoginResponseDto {
     private String username;
-    private String access_token;
+    private String accessToken;
 
     public LoginResponseDto() {
     }
 
-    public LoginResponseDto(String username, String access_token) {
-        this.access_token = access_token;
+    public LoginResponseDto(String username, String accessToken) {
+        this.accessToken = accessToken;
         this.username = username;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getUsername() {

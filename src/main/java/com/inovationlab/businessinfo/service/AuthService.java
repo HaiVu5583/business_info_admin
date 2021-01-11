@@ -58,7 +58,7 @@ public class AuthService {
         if (user == null) {
             throw new UserNotFoundException();
         }
-        boolean isMatched = passwordEncoder.matches(passwordEncoder.encode(requestDto.getPassword()), user.getPassword());
+        boolean isMatched = passwordEncoder.matches(requestDto.getPassword(), user.getPassword());
         if (!isMatched) throw new UserNotFoundException();
         return new LoginResponseDto(user.getUsername(), generateJWTToken(user));
     }
