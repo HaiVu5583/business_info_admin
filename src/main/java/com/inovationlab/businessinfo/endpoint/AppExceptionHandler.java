@@ -2,6 +2,7 @@ package com.inovationlab.businessinfo.endpoint;
 
 
 import com.inovationlab.businessinfo.exception.InvalidParamException;
+import com.inovationlab.businessinfo.exception.RecordExistsException;
 import com.inovationlab.businessinfo.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,12 @@ public class AppExceptionHandler {
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity<AppResponse> invalidParamExceptionHandler(HttpServletRequest req, IllegalArgumentException e) {
         return getInvalidParamResponse();
+    }
+
+    @ExceptionHandler(value = RecordExistsException.class)
+    public ResponseEntity<AppResponse> recordExistsExceptionHandler(HttpServletRequest req, RecordExistsException e) {
+        AppResponse errorResponse = new AppResponse(HttpStatus.BAD_REQUEST.value(), "record_exists");
+        return new ResponseEntity<AppResponse>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 }
